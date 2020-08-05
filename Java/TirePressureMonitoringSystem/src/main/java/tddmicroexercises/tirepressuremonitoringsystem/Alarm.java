@@ -1,26 +1,24 @@
 package tddmicroexercises.tirepressuremonitoringsystem;
 
-public class Alarm
-{
-    private final double LowPressureThreshold = 17;
-    private final double HighPressureThreshold = 21;
+public class Alarm {
+    private final Sensor sensor;
+    private final SafetyMeter safetyMeter;
+    private boolean alarmOn;
 
-    Sensor sensor = new Sensor();
+    public Alarm(Sensor sensor, SafetyMeter safetyMeter) {
+        this.sensor = sensor;
+        this.safetyMeter = safetyMeter;
+        this.alarmOn = false;
+    }
 
-    boolean alarmOn = false;
-
-    public void check()
-    {
+    public void check() {
         double psiPressureValue = sensor.popNextPressurePsiValue();
-
-        if (psiPressureValue < LowPressureThreshold || HighPressureThreshold < psiPressureValue)
-        {
+        if (!safetyMeter.test(psiPressureValue)) {
             alarmOn = true;
         }
     }
 
-    public boolean isAlarmOn()
-    {
+    public boolean isAlarmOn() {
         return alarmOn; 
     }
 }
